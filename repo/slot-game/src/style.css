@@ -17,7 +17,7 @@ body {
   position: relative;
   width: 1280px; /* Example width */
   height: 720px; /* Example height */
-  background-color: #000;
+  background: linear-gradient(to bottom, #000033, #000000);
   border: 2px solid #fff;
   box-shadow: 0 0 20px #fff;
 }
