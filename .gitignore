@@ -1,0 +1,28 @@
+# Dependencies
+/repo/slot-game/node_modules
+/node_modules
+
+# Environment variables
+.env
+
+# Python
+__pycache__/
+*.pyc
+
+# IDE & Editor specific
+.vscode/
+.idea/
+.cursor/
+.gemini/
+
+# Build output
+/repo/slot-game/dist
+/dist
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+/images
+*.log

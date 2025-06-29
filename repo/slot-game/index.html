@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Slot Game</title>
+    <style>
+      #mute-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        cursor: pointer;
+        border: none;
+        background-color: transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="game-canvas"></canvas>
+      <div id="ui-container">
+        <div class="info-display">
+          <span>Credits:</span>
+          <span id="credits-display">1000</span>
+        </div>
+        <div class="info-display">
+          <span>Bet:</span>
+          <span id="bet-display">10</span>
+        </div>
+        <div class="controls">
+          <button id="bet-minus-btn">-</button>
+          <button id="bet-plus-btn">+</button>
+          <button id="spin-btn">SPIN</button>
+          <button id="auto-spin-btn">AUTO</button>
+        </div>
+      </div>
+      <div id="win-notification" class="hidden">
+        WIN <span id="win-amount-counter">0</span>
+      </div>
+      <button id="mute-btn">🔊</button>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
