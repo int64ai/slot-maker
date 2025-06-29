@@ -1,3 +1,28 @@
+#logo-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100; /* Ensure it's on top of everything */
+  opacity: 1;
+  transition: opacity 1s ease-in-out; /* Corresponds to LOGO_FADE_OUT_TIME */
+}
+
+#logo-container.hidden {
+  opacity: 0;
+  pointer-events: none; /* Prevent interaction when hidden */
+}
+
+#logo-image {
+  width: 1000px; /* Set explicit width */
+  height: 200px;  /* Set explicit height */
+}
+
 :root {
   font-family: 'Arial', sans-serif;
   font-weight: bold;
@@ -5,7 +30,10 @@
 
 body {
   margin: 0;
-  background-color: #1a1a1a;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/background.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: #fff;
   display: flex;
   justify-content: center;
@@ -17,7 +45,8 @@ body {
   position: relative;
   width: 1280px; /* Example width */
   height: 720px; /* Example height */
-  background: linear-gradient(to bottom, #000033, #000000);
+  background: url('/images/reel_background.png') no-repeat center center;
+  background-size: cover;
   border: 2px solid #fff;
   box-shadow: 0 0 20px #fff;
 }
@@ -26,6 +55,10 @@ body {
   width: 100%;
   height: 100%;
   display: block;
+}
+
+#ui-container.hidden {
+  visibility: hidden;
 }
 
 #ui-container {
@@ -103,3 +136,51 @@ body {
   opacity: 0;
   visibility: hidden;
 }
+
+
+.win-text-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 120px;
+  font-weight: bold;
+  color: #ffc700;
+  text-shadow: 0 0 15px #fff, 0 0 25px #ffc700, 0 0 40px #ff8000;
+  pointer-events: none;
+  z-index: 100;
+  white-space: nowrap; /* Prevent line breaks */
+  width: 100%;
+  text-align: center;
+}
+
+.win-text-overlay.hidden {
+  display: none;
+}
+
+#mega-win-text {
+  font-size: 150px;
+  color: #ff4dd2;
+  text-shadow: 0 0 15px rgba(255,255,255,0.8), 0 0 25px #ff4dd2, 0 0 50px #ff00a2, 0 0 75px #ff00a2;
+  animation: mega-win-animation 1.5s ease-out forwards;
+}
+
+@keyframes mega-win-animation {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+  }
+  40% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
+  60% {
+    transform: translate(-50%, -50%) scale(1.1);
+    text-shadow: 0 0 25px rgba(255,255,255,1), 0 0 45px #ff4dd2, 0 0 70px #ff00a2, 0 0 100px #ff00a2;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+

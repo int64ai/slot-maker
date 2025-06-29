@@ -19,6 +19,9 @@
   </head>
   <body>
     <div id="app">
+      <div id="logo-container">
+        <img id="logo-image" src="/images/logo.png" alt="Game Logo" />
+      </div>
       <canvas id="game-canvas"></canvas>
       <div id="ui-container">
         <div class="info-display">
@@ -39,6 +42,8 @@
       <div id="win-notification" class="hidden">
         WIN <span id="win-amount-counter">0</span>
       </div>
+      <div id="big-win-text" class="win-text-overlay hidden">BIG WIN!</div>
+      <div id="mega-win-text" class="win-text-overlay hidden">MEGA WIN!!!</div>
       <button id="mute-btn">🔊</button>
     </div>
     <script type="module" src="/src/main.ts"></script>
