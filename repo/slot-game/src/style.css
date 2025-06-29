@@ -23,6 +23,24 @@
   height: 200px;  /* Set explicit height */
 }
 
+#start-prompt {
+  position: absolute;
+  bottom: 20%;
+  font-size: 32px;
+  color: white;
+  text-shadow: 0 0 10px black;
+  animation: blink 1.5s infinite;
+}
+
+#start-prompt.hidden {
+  display: none;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
 :root {
   font-family: 'Arial', sans-serif;
   font-weight: bold;

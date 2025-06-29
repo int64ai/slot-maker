@@ -1,4 +1,3 @@
-
 import './style.css';
 
 // --- Static Game Constants ---
@@ -13,8 +12,7 @@ const MANUAL_SPIN_COOLDOWN = 1000;
 const AUTO_SPIN_DELAY = 300;
 
 // --- Logo Screen Constants ---
-const LOGO_FADE_IN_TIME = 1000; // This is now just a delay before fade-out starts
-const LOGO_STAY_TIME = 1500;
+const LOGO_SOUND_DURATION = 2500; // Approximate duration of the logo sound
 const LOGO_FADE_OUT_TIME = 1000;
 
 // --- Animation Constants ---
@@ -231,17 +229,25 @@ class Game {
   }
 
   private startLogoSequence() {
-    this.playSound('logo_sound');
     const logoContainer = document.getElementById('logo-container')!;
-    
-    setTimeout(() => {
-      logoContainer.style.opacity = '0';
-      this.playBgm();
-    }, LOGO_FADE_IN_TIME + LOGO_STAY_TIME);
+    const logoImage = document.getElementById('logo-image')!;
+    const startPrompt = document.getElementById('start-prompt')!;
+
+    this.playSound('logo_sound');
 
     setTimeout(() => {
-      logoContainer.classList.add('hidden');
-    }, LOGO_FADE_IN_TIME + LOGO_STAY_TIME + LOGO_FADE_OUT_TIME);
+      logoImage.classList.add('hidden');
+      startPrompt.classList.remove('hidden');
+
+      logoContainer.addEventListener('click', () => {
+        this.playBgm();
+        logoContainer.style.opacity = '0';
+        setTimeout(() => {
+          logoContainer.classList.add('hidden');
+        }, LOGO_FADE_OUT_TIME);
+      }, { once: true }); // Ensure the event listener only runs once
+
+    }, LOGO_SOUND_DURATION);
   }
 
   private initGame() {
@@ -504,7 +510,6 @@ class Game {
     const durationPerWay = WIN_LINE_DISPLAY_DURATION / this.winningWays.length;
 
     if (this.isAutoSpinning) {
-      // For auto-spin, show each win once, then proceed.
       const showNextWin = (index: number) => {
         if (index >= this.winningWays.length) {
           this.endWinPresentation();
@@ -515,7 +520,6 @@ class Game {
       };
       showNextWin(0);
     } else {
-      // For manual spin, loop the animations.
       const showNextWin = (index: number) => {
         const nextIndex = index % this.winningWays.length;
         this.currentWinLineIndex = nextIndex;
