@@ -1,0 +1,53 @@
+{
+    "mcpServers": {
+      "filesystem": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "@modelcontextprotocol/server-filesystem",
+          "C:\\Users\\syrup\\Playground",
+          "C:\\Users\\syrup\\Playground\\slot-maker\\images",
+          "C:\\Users\\syrup\\Playground\\slot-maker\\repo"
+        ]
+      },  
+      "git": {
+        "command": "uvx",
+        "args": ["mcp-server-git", "--repository", "C:\\Users\\syrup\\Playground\\slot-maker"]
+      },
+      "memory": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "@modelcontextprotocol/server-memory"
+        ]
+      },
+      "sequential-thinking": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "@modelcontextprotocol/server-sequential-thinking"
+        ]
+      },
+      "time": {
+        "command": "uvx",
+        "args": ["mcp-server-time", "--local-timezone", "Asia/Seoul"]
+      },
+      "playwright": {  
+        "command": "npx",  
+        "args": [  
+          "@playwright/mcp@latest"
+        ]  
+      },
+      "gemini-image-gen": {
+        "command": "node",
+        "args": ["C:\\codes\\MCP\\Servers\\ImageMaker\\build\\index.js", "--image-path", "C:\\Users\\syrup\\Playground\\slot-maker\\images"],
+        "env": {
+          "GEMINI_API_KEY": "AIzaSyBqkld19SPRQ05UhWli20RfCkPYyUAltas"
+        }
+      },
+      "elevenlabs-sound-effect-server": {
+        "command": "C:\\codes\\MCP\\Servers\\SoundMaker\\build\\index.js",
+        "args": ["--output-path", "C:\\Users\\syrup\\Playground\\slot-maker\\sounds"]
+      }
+    }
+  }

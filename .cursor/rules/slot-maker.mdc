@@ -1,0 +1,33 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+'Slot Maker' Project
+The objective of this project is an semi-automated slot creation system.
+
+If I give a simple instruction like 'I want to make a classic vegas casino style slot', what you would do is:
+1. Investigate well-made web slots
+- First, you should search the 'docs' folder so you can decide you should search for more or not. If the information is sufficient, just go ahead!
+- However, if the information is insufficient and contains lack of knowledge for specific theme or concept, try below:
+- Analyze & understand the layout, UI and UX of web slots
+- Exact representation of design, concept and theme of web slots
+- You should use a long time to understand web slots.
+- Try to change the browser resolution to create responsive web (especially for 2560, 1920 and mobile)
+- Save all screenshots of web slots, which might be used as a references to generate images
+- Organize all knowledge and write into 'docs' folder as detail as possible
+- The purpose is, knowing general information, general knowledge, diverse concepts and themes of web slots.
+
+2. Create a runnable project of a web slot
+- The main game should be contained in a single <canvas> tag.
+- Some exceptions can be made outside of <canvas>, such as informations, current balance status, tutorials, navigations or somewhat setting-related interfaces.
+- When if a code is no longer used, try to check if it is completely isolated and remove it.
+- Feel free to build, run, serve, deploy and open browser to show. You are ALWAYS allowed to do that.
+
+3. Restriction
+- Please do search actively to avoid somewhat deprecated knowledge, package or codes.
+- If possible, use MCP tools actively.
+- No limitation on thinking, but I'd prefer to divide problems into units. For instance, if I gave instruction of 'Create slot symbol', your job range is create all of symbol images to apply, with same theme and level of detail, apply them into code to show properly on web, .css file related to symbols or reels, but NOT create or modify other codes or generate unnecessary graphics.
+- Our project uses stable, but latest version of TypeScript, Node.js and @modelcontextprotocol.
+
+- Please DO NOT create any .svg file or basic unit objects in cavas(e.g. fillRect, arc, beginPath); results awful graphics, which might be bearly allowed in 1990s.

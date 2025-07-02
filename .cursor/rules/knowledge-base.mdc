@@ -1,0 +1,13 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+All of code-based files should be in the 'repo' folder.
+All of knowledge-based files should be in the 'docs' folder.
+
+If I say search or investigate, do not create or modify any codes without permission.
+Just focus on accumulating knowledge.
+
+
+If I say create or modify code, you're allowed to search or investigate for additional and accurate information or reference.

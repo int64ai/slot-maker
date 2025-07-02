@@ -1,7 +1,7 @@
 import './style.css';
 
 // --- Static Game Constants ---
-const SYMBOL_COUNT = 8;
+const SYMBOL_COUNT = 9;
 const REEL_COUNT = 5;
 const SYMBOLS_PER_REEL = 3;
 const SPIN_DURATION = 1000;
@@ -22,7 +22,7 @@ const FRAMES_PER_SECOND = 60;
 const WIN_ANIMATION_PERIOD = 1;
 
 // --- Bet Amounts (Total Bet) ---
-const BET_AMOUNTS = [50, 100, 150, 200, 250];
+const BET_AMOUNTS = [100, 500, 2500, 10000, 50000];
 
 // --- Original Frame Asset Dimensions ---
 // const ORIGINAL_FRAME_WIDTH = 1024;
@@ -35,23 +35,24 @@ const ORIGINAL_REEL_SPACING_X = 126;
 
 // --- Paylines & Payouts (as Multipliers for Line Bet) ---
 const PAYOUTS: { [symbolId: string]: { [count: number]: number } } = {
-  'symbol_01': { 3: 10,  4: 25,   5: 100 },
-  'symbol_02': { 3: 10,  4: 25,   5: 100 },
-  'symbol_03': { 3: 15,  4: 40,   5: 150 },
-  'symbol_04': { 3: 15,  4: 40,   5: 150 },
-  'symbol_05': { 3: 30,  4: 100,  5: 400 },
-  'symbol_06': { 3: 50,  4: 200,  5: 800 },
-  'symbol_07': { 3: 75,  4: 400,  5: 1500 },
-  'symbol_08': { 3: 100, 4: 1000, 5: 5000 },
+  'symbol_01': { 3: 20,  4: 40,   5: 200 },
+  'symbol_02': { 3: 20,  4: 40,   5: 200 },
+  'symbol_03': { 3: 50,  4: 100,  5: 500 },
+  'symbol_04': { 3: 100, 4: 200,  5: 1000 },
+  'symbol_05': { 3: 200, 4: 400,  5: 2000 },
+  'symbol_06': { 3: 200, 4: 400,  5: 2000 },
+  'symbol_07': { 3: 500, 4: 1000, 5: 5000 },
+  'symbol_08': { 3: 500, 4: 1000, 5: 5000 },
+  'symbol_09': { 5: 10000 },
 };
 
 // --- Virtual Reel Strips ---
 const REEL_STRIPS: Record<string, string[]> = {
-  'reel_0': ['symbol_01', 'symbol_03', 'symbol_02', 'symbol_04', 'symbol_05', 'symbol_06', 'symbol_07', 'symbol_08', 'symbol_01', 'symbol_02', 'symbol_03', 'symbol_04'],
-  'reel_1': ['symbol_01', 'symbol_02', 'symbol_03', 'symbol_04', 'symbol_05', 'symbol_06', 'symbol_07', 'symbol_08', 'symbol_01', 'symbol_02', 'symbol_03', 'symbol_04'],
-  'reel_2': ['symbol_01', 'symbol_02', 'symbol_03', 'symbol_04', 'symbol_05', 'symbol_06', 'symbol_07', 'symbol_08', 'symbol_01', 'symbol_02', 'symbol_03', 'symbol_04'],
-  'reel_3': ['symbol_01', 'symbol_02', 'symbol_03', 'symbol_04', 'symbol_05', 'symbol_06', 'symbol_07', 'symbol_08', 'symbol_01', 'symbol_02', 'symbol_03', 'symbol_04'],
-  'reel_4': ['symbol_01', 'symbol_02', 'symbol_03', 'symbol_04', 'symbol_05', 'symbol_06', 'symbol_07', 'symbol_08', 'symbol_01', 'symbol_02', 'symbol_03', 'symbol_04'],
+  'reel_0': ['symbol_01', 'symbol_09', 'symbol_03', 'symbol_02', 'symbol_04', 'symbol_05', 'symbol_06', 'symbol_07', 'symbol_08', 'symbol_01', 'symbol_02', 'symbol_03', 'symbol_04'],
+  'reel_1': ['symbol_01', 'symbol_09', 'symbol_03', 'symbol_02', 'symbol_04', 'symbol_05', 'symbol_06', 'symbol_07', 'symbol_08', 'symbol_01', 'symbol_02', 'symbol_03', 'symbol_04'],
+  'reel_2': ['symbol_01', 'symbol_09', 'symbol_03', 'symbol_02', 'symbol_04', 'symbol_05', 'symbol_06', 'symbol_07', 'symbol_08', 'symbol_01', 'symbol_02', 'symbol_03', 'symbol_04'],
+  'reel_3': ['symbol_01', 'symbol_09', 'symbol_03', 'symbol_02', 'symbol_04', 'symbol_05', 'symbol_06', 'symbol_07', 'symbol_08', 'symbol_01', 'symbol_02', 'symbol_03', 'symbol_04'],
+  'reel_4': ['symbol_01', 'symbol_09', 'symbol_03', 'symbol_02', 'symbol_04', 'symbol_05', 'symbol_06', 'symbol_07', 'symbol_08', 'symbol_01', 'symbol_02', 'symbol_03', 'symbol_04'],
 };
 
 // --- Interfaces ---
@@ -101,11 +102,17 @@ class AssetLoader {
 class Symbol {
   constructor(public id: string, public image: HTMLImageElement) {}
   draw(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, scale = 1, rotation = 0) {
+    const sizeModifier = 0.9;
+    const aspectRatio = this.image.naturalWidth / this.image.naturalHeight;
+    
+    const finalWidth = w * sizeModifier;
+    const finalHeight = finalWidth / aspectRatio;
+
     ctx.save();
     ctx.translate(x + w / 2, y + h / 2);
     ctx.scale(scale, scale);
     ctx.rotate(rotation);
-    ctx.drawImage(this.image, -w / 2, -h / 2, w, h);
+    ctx.drawImage(this.image, -finalWidth / 2, -finalHeight / 2, finalWidth, finalHeight);
     ctx.restore();
   }
 }
@@ -202,7 +209,7 @@ class Game {
   private symbols: Symbol[] = [];
   private reels: Reel[] = [];
   private symbolMap!: Map<string, Symbol>;
-  private credits = 1000;
+  private credits = 10000;
   private betIndex = 0;
   private isSpinning = false;
   private isAutoSpinning = false;
@@ -216,6 +223,8 @@ class Game {
   private winNotificationTimeout: number | null = null;
   private isMuted = false;
   private bgmFadeInterval: number | null = null;
+  private progressiveJackpot = 0;
+  private frameSpinButton: { x: number; y: number; radius: number; } | null = null;
 
   constructor() {
     this.canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
@@ -229,25 +238,38 @@ class Game {
   }
 
   private startLogoSequence() {
+    const startScreen = document.getElementById('start-screen')!;
+    const playBtn = document.getElementById('play-btn')!;
     const logoContainer = document.getElementById('logo-container')!;
     const logoImage = document.getElementById('logo-image')!;
-    const startPrompt = document.getElementById('start-prompt')!;
+    const uiContainer = document.getElementById('ui-container')!;
 
-    this.playSound('logo_sound');
+    playBtn.addEventListener('click', () => {
+      // 1. Hide PLAY button and screen instantly
+      startScreen.style.display = 'none';
 
-    setTimeout(() => {
-      logoImage.classList.add('hidden');
-      startPrompt.classList.remove('hidden');
+      // 2. Show logo container instantly, then fade in logo image
+      logoContainer.classList.remove('hidden'); // Black background appears
+      this.playSound('logo_sound');
 
-      logoContainer.addEventListener('click', () => {
-        this.playBgm();
-        logoContainer.style.opacity = '0';
+      // Use a small timeout to allow the container to be displayed before starting the transition
+      setTimeout(() => {
+        logoImage.style.opacity = '1'; // Trigger logo fade-in
+      }, 50);
+
+      // 3. After 3 seconds, fade out logo and start game
+      setTimeout(() => {
+        logoContainer.style.opacity = '0'; // Fade out the whole container
+        this.playBgm(); // Start BGM
+        
         setTimeout(() => {
-          logoContainer.classList.add('hidden');
+          logoContainer.style.display = 'none';
+          uiContainer.classList.remove('hidden'); // Show main game UI
         }, LOGO_FADE_OUT_TIME);
-      }, { once: true }); // Ensure the event listener only runs once
 
-    }, LOGO_SOUND_DURATION);
+      }, 3000);
+
+    }, { once: true });
   }
 
   private initGame() {
@@ -272,9 +294,45 @@ class Game {
       this.reels.push(new Reel(srx, srsy, ssw, ssh, i, this.symbolMap));
     }
 
+    // Calculate the position for the invisible frame spin button
+    const thirdReel = this.reels[2];
+    if (thirdReel) {
+      this.frameSpinButton = {
+        x: thirdReel.x + thirdReel.symbolWidth / 2,
+        y: thirdReel.y + (thirdReel.symbolHeight * SYMBOLS_PER_REEL) + 100, // 100px below the reel
+        radius: thirdReel.symbolWidth / 2 // Similar diameter to the reel
+      };
+    }
+
     this.setupUI();
+    this.setupCanvasClickListener();
     this.updateUI();
-    (document.getElementById('ui-container') as HTMLElement).classList.remove('hidden');
+    // The UI container is now hidden by default and shown after the logo sequence
+  }
+
+  private setupCanvasClickListener() {
+    this.canvas.addEventListener('click', (event) => {
+      // Explicitly check conditions before trying to spin
+      if (this.isSpinning || this.isShowingWins) {
+        return;
+      }
+
+      if (!this.frameSpinButton) return;
+
+      const rect = this.canvas.getBoundingClientRect();
+      const scaleX = this.canvas.width / rect.width;
+      const scaleY = this.canvas.height / rect.height;
+      const x = (event.clientX - rect.left) * scaleX;
+      const y = (event.clientY - rect.top) * scaleY;
+
+      const dx = x - this.frameSpinButton.x;
+      const dy = y - this.frameSpinButton.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance <= this.frameSpinButton.radius) {
+        this.spin();
+      }
+    });
   }
 
   private duckBgm() {
@@ -377,8 +435,15 @@ class Game {
   }
 
   private updateUI() {
-    document.getElementById('credits-display')!.textContent = this.credits.toString();
-    document.getElementById('bet-display')!.textContent = BET_AMOUNTS[this.betIndex].toString();
+    document.getElementById('credits-display')!.textContent = this.credits.toLocaleString();
+    const betAmount = BET_AMOUNTS[this.betIndex];
+    document.getElementById('bet-display')!.textContent = betAmount.toLocaleString();
+    
+    const jackpotAmountEl = document.getElementById('jackpot-amount')!;
+    const baseJackpot = PAYOUTS['symbol_09'][5] * betAmount;
+    const totalJackpot = baseJackpot + this.progressiveJackpot;
+    
+    jackpotAmountEl.textContent = Math.floor(totalJackpot).toLocaleString();
   }
 
   private playSound(id: string) {
@@ -399,10 +464,15 @@ class Game {
 
   private spin() {
     if (this.isSpinning) return;
-    if (this.isShowingWins) { this.clearWinPresentation(); }
 
     const betAmount = BET_AMOUNTS[this.betIndex];
-    if (this.credits < betAmount) { this.stopAutoSpin(); return; }
+    if (this.credits < betAmount) {
+      this.stopAutoSpin();
+      this.setControlsDisabled(false); // Re-enable controls immediately
+      return;
+    }
+
+    if (this.isShowingWins) { this.clearWinPresentation(); }
 
     const bgm = this.assets.sounds['bgm_casino_night'];
     if (bgm && bgm.paused) { this.playBgm(); }
@@ -411,6 +481,7 @@ class Game {
     this.setControlsDisabled(true);
     this.winAnimationTime = 0;
     this.credits -= betAmount;
+    this.progressiveJackpot += betAmount * 0.1;
     this.updateUI();
     this.playSound('sfx_button_click');
     this.playSound('sfx_reel_spin');
@@ -444,6 +515,7 @@ class Game {
     document.getElementById('win-notification')!.classList.add('hidden');
     document.getElementById('big-win-text')!.classList.add('hidden');
     document.getElementById('mega-win-text')!.classList.add('hidden');
+    document.getElementById('jackpot-win-text')!.classList.add('hidden');
     this.restoreBgm();
     this.setControlsDisabled(false);
   }
@@ -458,7 +530,7 @@ class Game {
   private checkWins(finalGrid: Symbol[][]) {
     this.winningWays = [];
     let totalWin = 0;
-    const betMultiplier = BET_AMOUNTS[this.betIndex] / 50;
+    const betMultiplier = BET_AMOUNTS[this.betIndex] / 100;
 
     const uniqueSymbolsInFirstReel = [...new Set(finalGrid[0].map(s => s.id))];
 
@@ -484,20 +556,50 @@ class Game {
       if (comboLength >= 3) {
         const multiplier = PAYOUTS[symbolId]?.[comboLength];
         if (multiplier) {
-          totalWin += multiplier * waysCount * betMultiplier;
+          let winAmount = multiplier * waysCount * betMultiplier;
+          if (symbolId === 'symbol_09' && comboLength === 5) {
+            const betAmount = BET_AMOUNTS[this.betIndex];
+            winAmount = multiplier * waysCount * betAmount; // Jackpot is based on total bet
+            winAmount += this.progressiveJackpot;
+            this.progressiveJackpot = 0;
+          }
+          totalWin += winAmount;
           this.winningWays.push({ symbolId, comboLength, positions });
         }
       }
     });
 
+    // Sort winning ways by symbol ID (higher number first)
+    this.winningWays.sort((a, b) => {
+      const idA = parseInt(a.symbolId.split('_')[1]);
+      const idB = parseInt(b.symbolId.split('_')[1]);
+      return idB - idA;
+    });
+
     if (totalWin > 0) {
       this.credits += totalWin;
-      this.showWinNotification(totalWin, () => { this.startWinPresentation(); });
+      
       const totalBet = BET_AMOUNTS[this.betIndex];
-      if (totalWin >= totalBet * 20) { this.playSound('sfx_win_jackpot'); this.showWinText('mega'); this.duckBgm(); }
+      const isJackpotWin = this.winningWays.some(way => way.symbolId === 'symbol_09' && way.comboLength === 5);
+      let extraDuration = 0;
+
+      if (isJackpotWin) {
+        this.playSound('sfx_win_jackpot');
+        this.showWinText('jackpot');
+        this.duckBgm();
+        extraDuration = 2000; // 2 seconds longer
+      }
+      else if (totalWin >= totalBet * 20) { // MEGA WIN
+        this.playSound('sfx_win_jackpot');
+        this.showWinText('mega');
+        this.duckBgm();
+        extraDuration = 1000; // 1 second longer
+      }
       else if (totalWin >= totalBet * 10) { this.playSound('sfx_win_large'); this.showWinText('big'); this.duckBgm(); }
       else if (totalWin >= totalBet * 5) { this.playSound('sfx_win_medium'); this.showWinText('big'); this.duckBgm(); }
       else { this.playSound('sfx_win_small'); }
+      
+      this.showWinNotification(totalWin, () => { this.startWinPresentation(extraDuration); });
       this.updateUI();
     } else {
       if (this.isAutoSpinning) { setTimeout(() => this.spin(), AUTO_SPIN_DELAY); }
@@ -505,9 +607,10 @@ class Game {
     }
   }
 
-  private startWinPresentation() {
+  private startWinPresentation(extraDuration = 0) {
     this.isShowingWins = true;
-    const durationPerWay = WIN_LINE_DISPLAY_DURATION / this.winningWays.length;
+    const totalDuration = WIN_LINE_DISPLAY_DURATION + extraDuration;
+    const durationPerWay = totalDuration / this.winningWays.length;
 
     const showNextWin = (index: number) => {
       if (index >= this.winningWays.length) {
@@ -539,18 +642,18 @@ class Game {
       const progress = Math.min((timestamp - startTimestamp) / COUNT_UP_DURATION, 1);
       const easeOutProgress = 1 - Math.pow(1 - progress, 3);
       const currentAmount = Math.floor(easeOutProgress * amount);
-      counter.textContent = currentAmount.toString();
+      counter.textContent = currentAmount.toLocaleString();
       if (progress < 1) { requestAnimationFrame(step); }
       else {
-        counter.textContent = amount.toString();
+        counter.textContent = amount.toLocaleString();
         this.winNotificationTimeout = setTimeout(onComplete, 1000);
       }
     };
     requestAnimationFrame(step);
   }
 
-  private showWinText(type: 'big' | 'mega') {
-    const elementId = type === 'big' ? 'big-win-text' : 'mega-win-text';
+  private showWinText(type: 'big' | 'mega' | 'jackpot') {
+    const elementId = type === 'big' ? 'big-win-text' : type === 'mega' ? 'mega-win-text' : 'jackpot-win-text';
     document.getElementById(elementId)!.classList.remove('hidden');
   }
 
@@ -570,8 +673,8 @@ class Game {
     this.drawReelBackground();
     this.drawReels();
     this.drawReelShadows();
-    this.drawWinningSymbolAnimations();
     this.drawFrame();
+    this.drawWinningSymbolAnimations();
   }
 
   private drawReelBackground() {

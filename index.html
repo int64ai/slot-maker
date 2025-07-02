@@ -5,6 +5,9 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Slot Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@900&display=swap" rel="stylesheet">
     <style>
       #mute-btn {
         position: absolute;
@@ -19,19 +22,25 @@
   </head>
   <body>
     <div id="app">
-      <div id="logo-container">
+      <div id="start-screen">
+        <button id="play-btn">PLAY</button>
+      </div>
+      <div id="logo-container" class="hidden">
         <img id="logo-image" src="/images/logo.png" alt="Game Logo" />
-        <div id="start-prompt" class="hidden">Tap to Start</div>
       </div>
       <canvas id="game-canvas"></canvas>
-      <div id="ui-container">
+      <div id="jackpot-display">
+        <span class="jackpot-text">GRAND JACKPOT</span>
+        <span id="jackpot-amount"></span>
+      </div>
+      <div id="ui-container" class="hidden">
         <div class="info-display">
           <span>Credits:</span>
-          <span id="credits-display">1000</span>
+          <span id="credits-display">10000</span>
         </div>
         <div class="info-display">
           <span>Bet:</span>
-          <span id="bet-display">10</span>
+          <span id="bet-display">100</span>
         </div>
         <div class="controls">
           <button id="bet-minus-btn">-</button>
@@ -45,6 +54,7 @@
       </div>
       <div id="big-win-text" class="win-text-overlay hidden">BIG WIN!</div>
       <div id="mega-win-text" class="win-text-overlay hidden">MEGA WIN!!!</div>
+      <div id="jackpot-win-text" class="win-text-overlay hidden">GRAND JACKPOT!</div>
       <button id="mute-btn">🔊</button>
     </div>
     <script type="module" src="/src/main.ts"></script>
