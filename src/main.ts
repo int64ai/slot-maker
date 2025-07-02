@@ -243,7 +243,7 @@ class Game {
     const logoImage = document.getElementById('logo-image')!;
     const uiContainer = document.getElementById('ui-container')!;
 
-    playBtn.addEventListener('click', () => {
+    const handlePlay = () => {
       // 1. Hide PLAY button and screen instantly
       startScreen.style.display = 'none';
 
@@ -267,8 +267,10 @@ class Game {
         }, LOGO_FADE_OUT_TIME);
 
       }, 3000);
+    };
 
-    }, { once: true });
+    playBtn.addEventListener('click', handlePlay, { once: true });
+    playBtn.addEventListener('touchstart', handlePlay, { once: true });
   }
 
   private initGame() {
