@@ -12,7 +12,6 @@ const COUNT_UP_DURATION = 600;
 const AUTO_SPIN_DELAY = 300;
 
 // --- Logo Screen Constants ---
-const LOGO_SOUND_DURATION = 2500; // Approximate duration of the logo sound
 const LOGO_FADE_OUT_TIME = 1000;
 
 // --- Animation Constants ---
